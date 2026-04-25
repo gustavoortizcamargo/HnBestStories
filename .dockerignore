@@ -1,0 +1,11 @@
+**/bin
+**/obj
+**/.vs
+**/.idea
+.dotnet-home
+.git
+.env
+.env.*
+README.md
+TestResults
+coverage

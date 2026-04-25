@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "HnBestStories.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56719;http://localhost:56720"
+    }
+  }
+}

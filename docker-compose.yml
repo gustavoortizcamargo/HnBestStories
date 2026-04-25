@@ -1,0 +1,49 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Redis__ConnectionString: redis:6379
+      Seq__ServerUrl: http://seq:5341
+      HackerNews__BaseUrl: https://hacker-news.firebaseio.com/v0/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - seq
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      Redis__ConnectionString: redis:6379
+      Seq__ServerUrl: http://seq:5341
+      HackerNews__BaseUrl: https://hacker-news.firebaseio.com/v0/
+      Worker__RefreshIntervalMinutes: 5
+    depends_on:
+      - redis
+      - seq
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+
+  seq:
+    image: datalust/seq:latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SEQ_FIRSTRUN_NOAUTHENTICATION: "true"
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    volumes:
+      - seq-data:/data
+
+volumes:
+  redis-data:
+  seq-data:
